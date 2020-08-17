@@ -9,14 +9,14 @@ import org.springframework.web.client.RestTemplate;
 
 
 
-class Type implements Serializable {
+class PokemonType {
     public String name;
-    public String url;
+//    public String url;
 
     @JsonProperty("type")
     private void unpackType(Map<String,Object> type) {
         this.name = (String)type.get("name");
-        this.url = (String)type.get("url");
+//        this.url = (String)type.get("url");
     }
 }
 
@@ -24,7 +24,7 @@ class Pokemon implements Serializable {
     private long id;
     private String name;
     private String spriteURL;
-    private Type[] types;
+    private PokemonType[] pokemonTypes;
 
     @JsonProperty("sprites")
     private void unpackSprites(Map<String,Object> sprite) {
@@ -43,8 +43,8 @@ class Pokemon implements Serializable {
         return spriteURL;
     }
 
-    public Type[] getTypes() {
-        return types;
+    public PokemonType[] getTypes() {
+        return pokemonTypes;
     }
 
 }
@@ -52,9 +52,6 @@ class Pokemon implements Serializable {
 @Service
 public class PokemonService implements Serializable {
     public Pokemon getPokemon(String name) {
-//        if (name == null || name.isEmpty()) {
-//            return new Pokemon();
-//        }
         String pokemonResourceUrl = "https://pokeapi.co/api/v2/pokemon/" + name;
         return new RestTemplate().getForObject(pokemonResourceUrl, Pokemon.class);
     }

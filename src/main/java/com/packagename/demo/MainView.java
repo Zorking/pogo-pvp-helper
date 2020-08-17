@@ -5,7 +5,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -47,7 +48,7 @@ public class MainView extends VerticalLayout {
         textField.addThemeName("bordered");
 
         // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Search", e -> add(new Image(service.getPokemon(textField.getValue()).getSpriteURL(), "sdasdasd")));
+        Button button = new Button("Search", e -> this.addPokemon(service, textField.getValue()));
 
         // Theme variants give you predefined extra styles for components.
         // Example: Primary button has a more prominent look.
@@ -62,4 +63,16 @@ public class MainView extends VerticalLayout {
         add(textField, button);
     }
 
+    private void addPokemon(PokemonService service, String text) {
+        Pokemon pokemon = service.getPokemon(text);
+        Label label = new Label(pokemon.getName());
+        Image sprite = new Image(pokemon.getSpriteURL(), "no image");
+        StringBuilder types = new StringBuilder();
+        for (PokemonType pokemonType: pokemon.getTypes()){
+            types.append(pokemonType.name).append("\n");
+        }
+        HorizontalLayout row = new HorizontalLayout(label, sprite, new TextField(types.toString()));
+        row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+        add(row);
+    }
 }

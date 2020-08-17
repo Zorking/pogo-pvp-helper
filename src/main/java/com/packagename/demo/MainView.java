@@ -68,10 +68,10 @@ public class MainView extends VerticalLayout {
         Label label = new Label(pokemon.getName());
         Image sprite = new Image(pokemon.getSpriteURL(), "no image");
         StringBuilder types = new StringBuilder();
-        for (PokemonType pokemonType: pokemon.getTypes()){
-            types.append(pokemonType.name).append("\n");
+        for (Type pokemonType: pokemon.getTypes()){
+            types.append(pokemonType.name).append("|");
         }
-        HorizontalLayout row = new HorizontalLayout(label, sprite, new TextField(types.toString()));
+        HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()));
         row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         add(row);
     }

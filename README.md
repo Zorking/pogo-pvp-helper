@@ -1,3 +1,19 @@
+# TODO
+
+- ~~connect to pokemon API~~
+- ~~show pokemon name, sprite and types~~
+- delete pokemon 
+- max 3 pokemon
+- save your pokemon to DB
+- add rival's pokemon and delete it if you pass new one
+- show weaknesses and strengths of rival's pokemon
+- add auth with spring secure
+- add tests 100%
+- add elastic search
+- add voice input
+- deploy
+
+
 # Project Base for Vaadin and Spring Boot
 
 This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.

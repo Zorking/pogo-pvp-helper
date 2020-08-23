@@ -1,6 +1,7 @@
 package com.packagename.demo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -62,10 +63,18 @@ public class PokemonService implements Serializable {
         return new RestTemplate().getForObject(pokemonResourceUrl, PokemonSerializer.class);
     }
 
+    public List<Pokemon> findAll() {
+        return pokemonRepository.findAll();
+    }
+
     public void save(Pokemon pokemon) {
         if (pokemon == null) {
             return;
         }
         pokemonRepository.save(pokemon);
+    }
+
+    public void delete(Pokemon pokemon) {
+        pokemonRepository.delete(pokemon);
     }
 }

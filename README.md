@@ -3,7 +3,7 @@
 - ~~connect to pokemonSerializer API~~
 - ~~show pokemonSerializer name, sprite and types~~
 - ~~delete pokemonSerializer~~ 
-- save your pokemonSerializer to DB
+- ~~save your pokemonSerializer to DB~~
 - add rival's pokemonSerializer and delete it if you pass new one
 - show weaknesses and strengths of rival's pokemonSerializer
 - add auth with spring secure

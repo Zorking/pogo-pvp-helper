@@ -1,5 +1,6 @@
 package com.packagename.demo;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -44,25 +45,16 @@ public class MainView extends VerticalLayout {
      * @param service The message service. Automatically injected Spring managed bean.
      */
     public MainView(@Autowired PokemonService service) {
-
-        // Use TextField for standard text input
         TextField textField = new TextField("Search pokemon");
         textField.addThemeName("bordered");
-
-        // Button click listeners can be defined as lambda expressions
         Button button = new Button("Search", e -> this.addPokemon(service, textField.getValue()));
-
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button has a more prominent look.
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
         button.addClickShortcut(Key.ENTER);
-
-        // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
         add(textField, button);
+        for (Pokemon pokemon: service.findAll()) {
+            this.addPokemon(service, pokemon.getName());
+        }
     }
 
     private void addPokemon(PokemonService service, String text) {
@@ -73,16 +65,21 @@ public class MainView extends VerticalLayout {
         for (Type pokemonType: pokemonSerializer.getTypes()){
             types.append(pokemonType.name).append("|");
         }
-        Button deleteButton = new Button("", new Icon(VaadinIcon.TRASH), e -> remove(sprite.getParent().get()));
-        HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()), deleteButton);
-        row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-        add(row);
-
         Pokemon pokemon = new Pokemon();
         pokemon.setId(pokemonSerializer.getId());
         pokemon.setName(pokemonSerializer.getName());
         pokemon.setSpriteURL(pokemonSerializer.getSpriteURL());
         pokemon.setType(types.toString());
         service.save(pokemon);
+        Icon deleteIcon = new Icon(VaadinIcon.TRASH);
+        Button deleteButton = new Button("", deleteIcon, e -> deletePokemon(service, pokemon, sprite.getParent().get()));
+        HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()), deleteButton);
+        row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+        add(row);
+    }
+
+    private void deletePokemon(PokemonService service, Pokemon pokemon, Component pokemonComponent) {
+        service.delete(pokemon);
+        remove(pokemonComponent);
     }
 }

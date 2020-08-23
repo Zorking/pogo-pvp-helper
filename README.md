@@ -1,16 +1,16 @@
 # TODO
 
-- ~~connect to pokemon API~~
-- ~~show pokemon name, sprite and types~~
-- delete pokemon 
-- max 3 pokemon
-- save your pokemon to DB
-- add rival's pokemon and delete it if you pass new one
-- show weaknesses and strengths of rival's pokemon
+- ~~connect to pokemonSerializer API~~
+- ~~show pokemonSerializer name, sprite and types~~
+- ~~delete pokemonSerializer~~ 
+- save your pokemonSerializer to DB
+- add rival's pokemonSerializer and delete it if you pass new one
+- show weaknesses and strengths of rival's pokemonSerializer
 - add auth with spring secure
 - add tests 100%
 - add elastic search
 - add voice input
+- max 3 pokemonSerializer  ???
 - deploy
 
 

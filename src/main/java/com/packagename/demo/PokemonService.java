@@ -20,8 +20,8 @@ class Type implements Serializable {
     }
 }
 
-class Pokemon implements Serializable {
-    private long id;
+class PokemonSerializer implements Serializable {
+    private Integer id;
     private String name;
     private String spriteURL;
     private Type[] types;
@@ -31,7 +31,7 @@ class Pokemon implements Serializable {
         this.spriteURL = (String)sprite.get("front_default");
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -51,9 +51,21 @@ class Pokemon implements Serializable {
 
 @Service
 public class PokemonService implements Serializable {
-    public Pokemon getPokemon(String name) {
-        String pokemonResourceUrl = "https://pokeapi.co/api/v2/pokemon/" + name;
-        return new RestTemplate().getForObject(pokemonResourceUrl, Pokemon.class);
+    private PokemonRepository pokemonRepository;
+
+    public PokemonService(PokemonRepository pokemonRepository) {
+        this.pokemonRepository = pokemonRepository;
     }
 
+    public PokemonSerializer getPokemon(String name) {
+        String pokemonResourceUrl = "https://pokeapi.co/api/v2/pokemon/" + name;
+        return new RestTemplate().getForObject(pokemonResourceUrl, PokemonSerializer.class);
+    }
+
+    public void save(Pokemon pokemon) {
+        if (pokemon == null) {
+            return;
+        }
+        pokemonRepository.save(pokemon);
+    }
 }

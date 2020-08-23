@@ -6,6 +6,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -64,15 +66,23 @@ public class MainView extends VerticalLayout {
     }
 
     private void addPokemon(PokemonService service, String text) {
-        Pokemon pokemon = service.getPokemon(text);
-        Label label = new Label(pokemon.getName());
-        Image sprite = new Image(pokemon.getSpriteURL(), "no image");
+        PokemonSerializer pokemonSerializer = service.getPokemon(text);
+        Label label = new Label(pokemonSerializer.getName());
+        Image sprite = new Image(pokemonSerializer.getSpriteURL(), "no image");
         StringBuilder types = new StringBuilder();
-        for (Type pokemonType: pokemon.getTypes()){
+        for (Type pokemonType: pokemonSerializer.getTypes()){
             types.append(pokemonType.name).append("|");
         }
-        HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()));
+        Button deleteButton = new Button("", new Icon(VaadinIcon.TRASH), e -> remove(sprite.getParent().get()));
+        HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()), deleteButton);
         row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         add(row);
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(pokemonSerializer.getId());
+        pokemon.setName(pokemonSerializer.getName());
+        pokemon.setSpriteURL(pokemonSerializer.getSpriteURL());
+        pokemon.setType(types.toString());
+        service.save(pokemon);
     }
 }

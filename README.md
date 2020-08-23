@@ -8,9 +8,12 @@
 - show weaknesses and strengths of rival's pokemonSerializer
 - add auth with spring secure
 - add tests 100%
-- add elastic search
-- add voice input
+- show only data related to your pokemon
+- show data in numbers instead of current representation
+- add type selection with already existing pokemon selection (will work separately)
+- add voice input ???
 - max 3 pokemonSerializer  ???
+- add elastic search ???
 - deploy
 
 

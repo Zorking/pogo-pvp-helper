@@ -50,6 +50,19 @@ class PokemonSerializer implements Serializable {
 
 }
 
+class TypeDamageSerializer implements Serializable {
+    public Type[] double_damage_from;
+    public Type[] double_damage_to;
+    public Type[] half_damage_from;
+    public Type[] half_damage_to;
+    public Type[] no_damage_from;
+    public Type[] no_damage_to;
+}
+
+class TypeDetailSerializer implements Serializable {
+    public TypeDamageSerializer damage_relations;
+}
+
 @Service
 public class PokemonService implements Serializable {
     private PokemonRepository pokemonRepository;
@@ -59,8 +72,12 @@ public class PokemonService implements Serializable {
     }
 
     public PokemonSerializer getPokemon(String name) {
-        String pokemonResourceUrl = "https://pokeapi.co/api/v2/pokemon/" + name;
+        String pokemonResourceUrl = "https://pokeapi.co/api/v2/pokemon/" + name.toLowerCase();
         return new RestTemplate().getForObject(pokemonResourceUrl, PokemonSerializer.class);
+    }
+
+    public TypeDetailSerializer getTypeWeakness(String url) {
+        return new RestTemplate().getForObject(url, TypeDetailSerializer.class);
     }
 
     public List<Pokemon> findAll() {

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
@@ -47,17 +48,18 @@ public class MainView extends VerticalLayout {
     public MainView(@Autowired PokemonService service) {
         TextField textField = new TextField("Search pokemon");
         textField.addThemeName("bordered");
-        Button button = new Button("Search", e -> this.addPokemon(service, textField.getValue()));
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        button.addClickShortcut(Key.ENTER);
+        Button addYourPokemonButton = new Button("Add Your Pokemon", e -> this.addPokemon(service, textField.getValue(), true));
+        Button addRivalPokemonButton = new Button("Add Rival Pokemon", e -> this.addPokemon(service, textField.getValue(), false));
+        addYourPokemonButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addYourPokemonButton.addClickShortcut(Key.ENTER);
         addClassName("centered-content");
-        add(textField, button);
+        add(textField, addYourPokemonButton, addRivalPokemonButton);
         for (Pokemon pokemon: service.findAll()) {
-            this.addPokemon(service, pokemon.getName());
+            this.addPokemon(service, pokemon.getName(), true);
         }
     }
 
-    private void addPokemon(PokemonService service, String text) {
+    private void addPokemon(PokemonService service, String text, boolean isYourPokemon) {
         PokemonSerializer pokemonSerializer = service.getPokemon(text);
         Label label = new Label(pokemonSerializer.getName());
         Image sprite = new Image(pokemonSerializer.getSpriteURL(), "no image");
@@ -66,20 +68,27 @@ public class MainView extends VerticalLayout {
             types.append(pokemonType.name).append("|");
         }
         Pokemon pokemon = new Pokemon();
-        pokemon.setId(pokemonSerializer.getId());
-        pokemon.setName(pokemonSerializer.getName());
-        pokemon.setSpriteURL(pokemonSerializer.getSpriteURL());
-        pokemon.setType(types.toString());
-        service.save(pokemon);
+        if (isYourPokemon) {
+            pokemon.setId(pokemonSerializer.getId());
+            pokemon.setName(pokemonSerializer.getName());
+            pokemon.setSpriteURL(pokemonSerializer.getSpriteURL());
+            pokemon.setType(types.toString());
+            service.save(pokemon);
+        }
         Icon deleteIcon = new Icon(VaadinIcon.TRASH);
         Button deleteButton = new Button("", deleteIcon, e -> deletePokemon(service, pokemon, sprite.getParent().get()));
         HorizontalLayout row = new HorizontalLayout(label, sprite, new Label(types.toString()), deleteButton);
+        if (!isYourPokemon) {
+            row.getStyle().set("background-color", "coral");
+        }
         row.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         add(row);
     }
 
     private void deletePokemon(PokemonService service, Pokemon pokemon, Component pokemonComponent) {
-        service.delete(pokemon);
+        if (pokemon != null) {
+            service.delete(pokemon);
+        }
         remove(pokemonComponent);
     }
 }

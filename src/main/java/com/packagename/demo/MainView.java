@@ -9,6 +9,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -40,10 +41,15 @@ import java.lang.reflect.Array;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends VerticalLayout {
     public MainView(@Autowired PokemonService service) {
+        HorizontalLayout navbar= new HorizontalLayout();
+//        menuBar.addItem("Login with Google")
+        boolean isAuthentificated = false;
+        Anchor logout = new Anchor("/logout", "Logout");
         Anchor googleLoginButton = new Anchor("/oauth2/authorization/google", "Login with Google");
-        add(googleLoginButton);
-        Anchor googleLogoutButton = new Anchor("/oauth2/authorization/google", "Login with Google");
-        add(googleLogoutButton);
+        logout.getElement().setAttribute("router-ignore", true);
+        logout.setVisible(isAuthentificated);
+        googleLoginButton.setVisible(!isAuthentificated);
+        navbar.add(googleLoginButton, logout);
         VerticalLayout toolPanel = new VerticalLayout();
         HorizontalLayout buttonPanel = new HorizontalLayout();
         HorizontalLayout pokemonsPanel = new HorizontalLayout();
@@ -72,7 +78,7 @@ public class MainView extends VerticalLayout {
         yourPokemonHeader.getStyle().set("margin", "0px 7% 0px 30%").set("display", "table").set("Width", "50%");
         rivalsPokemonHeader.getStyle().set("margin", "0px 25% 0px 7%").set("display", "table").set("Width", "50%");
         headers.add(yourPokemonHeader, rivalsPokemonHeader);
-        add(toolPanel, headers, pokemonsPanel);
+        add(navbar, toolPanel, headers, pokemonsPanel);
 //        for (Pokemon pokemon: service.findAll()) {
 //            this.addPokemon(service, pokemon.getName(), true);
 //        }

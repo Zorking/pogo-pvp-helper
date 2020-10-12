@@ -6,10 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -43,14 +40,18 @@ import java.lang.reflect.Array;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends VerticalLayout {
     public MainView(@Autowired PokemonService service) {
+        Anchor googleLoginButton = new Anchor("/oauth2/authorization/google", "Login with Google");
+        add(googleLoginButton);
+        Anchor googleLogoutButton = new Anchor("/oauth2/authorization/google", "Login with Google");
+        add(googleLogoutButton);
         VerticalLayout toolPanel = new VerticalLayout();
         HorizontalLayout buttonPanel = new HorizontalLayout();
         HorizontalLayout pokemonsPanel = new HorizontalLayout();
         VerticalLayout yourPokemonsPanel = new VerticalLayout();
         VerticalLayout rivalPokemonsPanel = new VerticalLayout();
         toolPanel.getStyle().set("padding-right", "13%");
-        yourPokemonsPanel.getStyle().set("margin", "0px 0px 0px 25%").set("display", "table").set("Width", "50%");
-        rivalPokemonsPanel.getStyle().set("margin", "0px 25% 0px 0px").set("display", "table").set("Width", "50%");
+        yourPokemonsPanel.getStyle().set("margin", "0px 0px 0px 25%").set("display", "table").set("width", "50%");
+        rivalPokemonsPanel.getStyle().set("margin", "0px 25% 0px 0px").set("display", "table").set("width", "50%");
         pokemonsPanel.setWidth("100%");
         ComboBox<String> searchPokemon = new ComboBox<>();
         searchPokemon.setLabel("Search Pokemon");
